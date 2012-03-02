@@ -1,47 +1,100 @@
 <?php
 
+/**
+ * Implementation of hook_services_resources().
+ */
 function privatemsg_service_services_resources() {
   $resources = array();
 
   $resources['privatemsg']['actions']['send'] = array(
     'file' => array(
-	'type' => 'inc',
-	'module' => 'privatemsg_service',
-	'name' => 'privatemsg_service',
+      'type' => 'inc', 
+      'module' => 'privatemsg_service', 
+      'name' => 'privatemsg_service',
     ),
-    'help' => t('Return TRUE if the message sending was a success.'),
+    'help'   => t('Send privatemsg by a user.'),
     'access arguments' => array('access content'),
-    'callback'         => 'privatemsg_service_send',
-    'args'             => array(
-       array(
-          'name'         => 'sender',
-          'type'         => 'string',
-          'description'  => t('sender phone number'),
-	  'source'	 => array('data' => 'sender'),
-          'optional'     => FALSE,
-       ),
-       array(
-          'name'         => 'recipients',
-          'type'         => 'string',
-          'description'  => t('A comma separated list of recipients phone number'),
-          'optional'     => FALSE,
-	  'source'	 => array('data' => 'recipients'),
-       ),
-       array(
-          'name'         => 'subject',
-          'type'         => 'string',
-          'description'  => t('A message subject.'),
-	  'optional'	 => FALSE,
-	  'source'	 => array('data' => 'subject'),
-        ),
-        array(
-          'name'         => 'body',
-          'type'         => 'string',
-          'description'  => t('A message body.'),
-          'optional'     => FALSE,
-	  'source'	 => array('data' => 'body'),
-        ),
+    'callback' => 'privatemsg_service_send',
+    'args'     => array(
+      array(
+        'name' => 'sender',
+        'type' => 'string',
+        'description' => t('sender phone number.'),
+        'source' => array('data' => 'sender'),
+        'optional' => FALSE,
       ),
+      array(
+        'name' => 'recipients',
+        'type' => 'string',
+        'description' => t('recipients list'),
+        'source' => array('data' => 'recipients'),
+        'optional' => FALSE,
+      ),
+      array(
+        'name' => 'body',
+        'type' => 'string',
+        'description' => t('message body'),
+        'source' => array('data' => 'sender'),
+        'optional' => FALSE,
+      ),
+      array(
+        'name' => 'subject',
+        'type' => 'string',
+        'description' => t('message subject'),
+        'source' => array('data' => 'subject'),
+        'optional' => TRUE,
+      ),
+    ),
   );
+
+  $resources['privatemsg']['actions']['get'] = array(
+    'file' => array(
+      'type' => 'inc', 
+      'module' => 'privatemsg_service', 
+      'name' => 'privatemsg_service',
+    ),
+    'help'   => t('Get privatemsg - only one message'),
+    'access arguments' => array('access content'),
+    'callback' => 'privatemsg_service_get',
+    'args'     => array(
+      array(
+        'name' => 'type',
+        'type' => 'string',
+        'description' => t('type of message - inbox, outbox.'),
+        'source' => array('data' => 'type'),
+        'optional' => TRUE,
+      ),
+      array(
+        'name' => 'load_full',
+        'type' => 'boolean',
+        'description' => t('A boolean to indicate whether to load the all messages in a thread or just the message preview. Do not pass FALSE, just leave it empty for message previews.'),
+        'source' => array('data' => 'load_full'),
+        'optional' => TRUE,
+      ),
+      array(
+        'name' => 'offset',
+        'type' => 'int',
+        'description' => t('An offset intger for paing.'),
+        'source' => array('data' => 'offset'),
+        'optional' => TRUE,
+      ),
+      array(
+        'name' => 'limit',
+        'type' => 'int',
+        'description' => t('A limit integer for paging.'),
+        'source' => array('data' => 'limit'),
+        'optional' => TRUE,
+      ),
+      array(
+        'name' => 'recipient',
+        'type' => 'string',
+        'description' => t('recipient phone number.'),
+        'source' => array('data' => 'recipient'),
+        'optional' => FALSE,
+      ),
+    ),
+  );
+
+  return $resources;
 }
 
