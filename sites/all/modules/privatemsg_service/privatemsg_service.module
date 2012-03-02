@@ -1,0 +1,47 @@
+<?php
+
+function privatemsg_service_services_resources() {
+  $resources = array();
+
+  $resources['privatemsg']['actions']['send'] = array(
+    'file' => array(
+	'type' => 'inc',
+	'module' => 'privatemsg_service',
+	'name' => 'privatemsg_service',
+    ),
+    'help' => t('Return TRUE if the message sending was a success.'),
+    'access arguments' => array('access content'),
+    'callback'         => 'privatemsg_service_send',
+    'args'             => array(
+       array(
+          'name'         => 'sender',
+          'type'         => 'string',
+          'description'  => t('sender phone number'),
+	  'source'	 => array('data' => 'sender'),
+          'optional'     => FALSE,
+       ),
+       array(
+          'name'         => 'recipients',
+          'type'         => 'string',
+          'description'  => t('A comma separated list of recipients phone number'),
+          'optional'     => FALSE,
+	  'source'	 => array('data' => 'recipients'),
+       ),
+       array(
+          'name'         => 'subject',
+          'type'         => 'string',
+          'description'  => t('A message subject.'),
+	  'optional'	 => FALSE,
+	  'source'	 => array('data' => 'subject'),
+        ),
+        array(
+          'name'         => 'body',
+          'type'         => 'string',
+          'description'  => t('A message body.'),
+          'optional'     => FALSE,
+	  'source'	 => array('data' => 'body'),
+        ),
+      ),
+  );
+}
+
