@@ -86,6 +86,7 @@ function flag_service_flag_content($flag_name, $content_id, $action = 'flag', $u
  */
 function flag_service_is_flagged($flag_name, $content_id, $uid = NULL) {
   $flag = flag_get_flag($flag_name);
+
   if (!$flag) {
     // Flag does not exist.
     return services_error(t('There is no file with flag with the name @flag_name', array('@flag_name' => $flag_name)), 406);

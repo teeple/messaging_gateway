@@ -18,4 +18,10 @@ define('DRUPAL_ROOT', getcwd());
 
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
+
+require_once 'Log.php';
+$logconf = array('mode' => 0775, 'timeFormat' => '%X %x');
+$logger = &Log::singleton('file', '/tmp/drupal.log', 'ident', $logconf);
+
+//$logger->log('boot drupal!!');
 menu_execute_active_handler();

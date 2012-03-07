@@ -155,6 +155,7 @@ function privatemsg_list_page($argument = 'list', $uid = NULL) {
 }
 
 function privatemsg_list($form, &$form_state, $argument, $account) {
+
   drupal_add_css(drupal_get_path('module', 'privatemsg') . '/styles/privatemsg-list.css');
 
   // If this is an AJAX request, update $_GET['q'] so that table sorting and
@@ -192,8 +193,10 @@ function privatemsg_list($form, &$form_state, $argument, $account) {
   );
 
   $query = _privatemsg_assemble_query('list', $account, $argument);
+
   $i = 0;
   foreach ($query->execute() as $row) {
+
     // Store the raw row data.
     $form['updated']['list']['#options'][$row->thread_id] = (array)$row;
     // Tableselect sorts the options, set a weight so that the order doesn't get

@@ -6,35 +6,32 @@
 function privatemsg_service_services_resources() {
   $resources = array();
 
-  $resources['privatemsg']['actions']['send'] = array(
-    'file' => array(
-      'type' => 'inc', 
-      'module' => 'privatemsg_service', 
-      'name' => 'privatemsg_service',
+  $resources['privatemsg']['actions']['send_by_phoneno'] = array(
+    'file' => array( 'type' => 'inc', 'module' => 'privatemsg_service', 'name' => 'privatemsg_service',
     ),
-    'help'   => t('Send privatemsg by a user.'),
+    'help'   => t('Send privatemsg'),
     'access arguments' => array('access content'),
-    'callback' => 'privatemsg_service_send',
+    'callback' => 'privatemsg_service_send_by_phoneno',
     'args'     => array(
       array(
-        'name' => 'sender',
+        'name' => 'sender_phoneno',
         'type' => 'string',
         'description' => t('sender phone number.'),
-        'source' => array('data' => 'sender'),
+        'source' => array('data' => 'sender_phoneno'),
         'optional' => FALSE,
       ),
       array(
-        'name' => 'recipients',
-        'type' => 'string',
+        'name' => 'recipient_phoneno_list',
+        'type' => 'array',
         'description' => t('recipients list'),
-        'source' => array('data' => 'recipients'),
+        'source' => array('data' => 'recipient_phoneno_list'),
         'optional' => FALSE,
       ),
       array(
         'name' => 'body',
         'type' => 'string',
         'description' => t('message body'),
-        'source' => array('data' => 'sender'),
+        'source' => array('data' => 'body'),
         'optional' => FALSE,
       ),
       array(
@@ -47,30 +44,14 @@ function privatemsg_service_services_resources() {
     ),
   );
 
-  $resources['privatemsg']['actions']['get'] = array(
+  $resources['privatemsg']['actions']['get_by_phoneno'] = array(
     'file' => array(
-      'type' => 'inc', 
-      'module' => 'privatemsg_service', 
-      'name' => 'privatemsg_service',
+      'type' => 'inc', 'module' => 'privatemsg_service', 'name' => 'privatemsg_service',
     ),
-    'help'   => t('Get privatemsg - only one message'),
+    'help'   => t('Get privatemsg '),
     'access arguments' => array('access content'),
-    'callback' => 'privatemsg_service_get',
+    'callback' => 'privatemsg_service_get_by_phoneno',
     'args'     => array(
-      array(
-        'name' => 'type',
-        'type' => 'string',
-        'description' => t('type of message - inbox, outbox.'),
-        'source' => array('data' => 'type'),
-        'optional' => TRUE,
-      ),
-      array(
-        'name' => 'load_full',
-        'type' => 'boolean',
-        'description' => t('A boolean to indicate whether to load the all messages in a thread or just the message preview. Do not pass FALSE, just leave it empty for message previews.'),
-        'source' => array('data' => 'load_full'),
-        'optional' => TRUE,
-      ),
       array(
         'name' => 'offset',
         'type' => 'int',
@@ -86,10 +67,42 @@ function privatemsg_service_services_resources() {
         'optional' => TRUE,
       ),
       array(
-        'name' => 'recipient',
+        'name' => 'recipient_phoneno',
         'type' => 'string',
-        'description' => t('recipient phone number.'),
-        'source' => array('data' => 'recipient'),
+        'description' => t('privatemsg recipient phone number.'),
+        'source' => array('data' => 'recipient_phoneno'),
+        'optional' => FALSE,
+      ),
+      array(
+        'name' => 'sender_phoneno',
+        'type' => 'string',
+        'description' => t('privatemsg owner`s phone number.'),
+        'source' => array('data' => 'sender_phoneno'),
+        'optional' => TRUE,
+      ),
+    ),
+  );
+
+  $resources['privatemsg']['actions']['get_by_mid'] = array(
+    'file' => array(
+      'type' => 'inc', 'module' => 'privatemsg_service', 'name' => 'privatemsg_service',
+    ),
+    'help'   => t('Get privatemsg by mid'),
+    'access arguments' => array('access content'),
+    'callback' => 'privatemsg_service_get_by_mid',
+    'args'     => array(
+      array(
+        'name' => 'mid',
+        'type' => 'int',
+        'description' => t('An message id'),
+        'source' => array('data' => 'mid'),
+        'optional' => FALSE,
+      ),
+      array(
+        'name' => 'recipient_phoneno',
+        'type' => 'string',
+        'description' => t('privatemsg recipient phone number.'),
+        'source' => array('data' => 'recipient_phoneno'),
         'optional' => FALSE,
       ),
     ),
