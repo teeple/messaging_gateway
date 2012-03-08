@@ -1,5 +1,15 @@
 <?php
 
+function privatemsg_service_perm() {
+    return array(
+            'privatemsg_service from remote',
+    );
+}
+
+function privatemsg_service_access() {
+    return TRUE;
+}
+
 /**
  * Implementation of hook_services_resources().
  */
@@ -10,7 +20,8 @@ function privatemsg_service_services_resources() {
     'file' => array( 'type' => 'inc', 'module' => 'privatemsg_service', 'name' => 'privatemsg_service',
     ),
     'help'   => t('Send privatemsg'),
-    'access arguments' => array('access content'),
+    'access callback' => 'privatemsg_service_access',
+    // 'access arguments' => array('access content'),
     'callback' => 'privatemsg_service_send_by_phoneno',
     'args'     => array(
       array(
@@ -22,7 +33,8 @@ function privatemsg_service_services_resources() {
       ),
       array(
         'name' => 'recipient_phoneno_list',
-        'type' => 'array',
+        // 'type' => 'array',
+        'type' => 'string',
         'description' => t('recipients list'),
         'source' => array('data' => 'recipient_phoneno_list'),
         'optional' => FALSE,
