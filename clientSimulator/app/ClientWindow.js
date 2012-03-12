@@ -124,6 +124,9 @@ Ext.define('ClientWindow', {
     sendRequest : function(){
     	var me = this;
 
+    	var hostURL = 'http://newbiz.uangel.com/skytel/';
+//    	var hostURL = 'http://192.168.1.156/';
+
     	var sendParam = {
     			sender_phoneno: Ext.getCmp('sender.senderMDN').value,
 //    			recipient_phoneno_list: [Ext.getCmp('sender.recipientMDN').value],
@@ -132,30 +135,55 @@ Ext.define('ClientWindow', {
     	};
 
     	Ext.Ajax.request({
-		    url: 'http://192.168.1.156/note/privatemsg/send_by_phoneno',
+		    url: hostURL + 'note/privatemsg/send_by_phoneno',
 		    method: 'POST',
 		    params: sendParam,
 		    success: function(resp){
 		    	console.log('--send--');
 		    	console.log(resp);
-		    	console.log(resp.responseText);
 
 		    	var responseText = Ext.decode(resp.responseText);
 
 		    	if(responseText['success']){
+		    		var rMDN = Ext.getCmp('sender.recipientMDN').value;
+
+			    	if(rMDN == '1111' || rMDN == '1112' || rMDN == '1113'){
+			    		var senderParam1 = {
+			    				recipient_phoneno: Ext.getCmp('sender.senderMDN').value
+			    		};
+
+			    		Ext.Ajax.request({
+			    		    url: hostURL + 'note/privatemsg/get_by_phoneno',
+			    		    method: 'POST',
+			    		    params: senderParam1,
+			    		    success: function(resp){
+			    		    	var responseText = Ext.decode(resp.responseText);
+			    		    	console.log('--sender--');
+			    		    	console.log(resp);
+			    		    	if(responseText != 'FALSE'){
+			    		    		Ext.getCmp('sender.message').setValue(responseText.body);
+			    		    	}
+			    		    },
+			    		    failure:function(reqs){
+			    		    	console.log(reqs);
+			    		    	Ext.MessageBox.alert('Error occured during connection..');
+			    			}
+			    		});
+			    	}
+
 		    		//client 1
-		        	var readParam1 = {
+		    		var readParam1 = {
 		    				recipient_phoneno: Ext.getCmp('recipent1.recipentMDN').value
 		    		};
 
 		    		Ext.Ajax.request({
-		    		    url: 'http://192.168.1.156/note/privatemsg/get_by_phoneno',
+		    		    url: hostURL + 'note/privatemsg/get_by_phoneno',
 		    		    method: 'POST',
 		    		    params: readParam1,
 		    		    success: function(resp){
-		    		    	console.log('--read1--');
 		    		    	var responseText = Ext.decode(resp.responseText);
-		    		    	console.log(responseText);
+		    		    	console.log('--read1--');
+		    		    	console.log(resp);
 		    		    	if(responseText != 'FALSE'){
 		    		    		Ext.getCmp('recipent1.senderMDN').setValue(responseText.sender_phoneno);
 		    		    		Ext.getCmp('recipent1.message').setValue(responseText.body);
@@ -168,18 +196,18 @@ Ext.define('ClientWindow', {
 		    		});
 
 		    		//client 2
-		        	var readParam2 = {
+	    			var readParam2 = {
 		    				recipient_phoneno: Ext.getCmp('recipent2.recipentMDN').value
 		    		};
 
 		    		Ext.Ajax.request({
-		    		    url: 'http://192.168.1.156/note/privatemsg/get_by_phoneno',
+		    		    url: hostURL + 'note/privatemsg/get_by_phoneno',
 		    		    method: 'POST',
 		    		    params: readParam2,
 		    		    success: function(resp){
-		    		    	console.log('--read2--');
 		    		    	var responseText = Ext.decode(resp.responseText);
-		    		    	console.log(responseText);
+		    		    	console.log('--read2--');
+		    		    	console.log(resp);
 		    		    	if(responseText != 'FALSE'){
 		    		    		Ext.getCmp('recipent2.senderMDN').setValue(responseText.sender_phoneno);
 		    		    		Ext.getCmp('recipent2.message').setValue(responseText.body);

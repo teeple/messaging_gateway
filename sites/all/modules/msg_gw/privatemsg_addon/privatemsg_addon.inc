@@ -1,18 +1,4 @@
 <?php
-function _get_uid_by_phoneno($phoneno) {
-    $query = new EntityFieldQuery;
-
-    $result = $query
-          ->entityCondition('entity_type', 'user')
-          ->fieldCondition('field_phoneno', 'value', $phoneno, '=')
-          ->execute();
-
-    foreach ($result['user'] as $user) {
-        $uid = $user->uid;
-    }
-    return $uid;
-}
-
 /**
  * @file
  *  Link general private message module functionalities to services module.
@@ -64,16 +50,14 @@ function privatemsg_service_get_by_mid($mid, $recipient_phoneno) {
 
 function privatemsg_service_send_by_phoneno($sender_phoneno,$recipient_phoneno_list, $body, $subject){
 
-    global $user;
-
     error_log('global user: '.$user->uid);
 
     $ret_arr = array();
     $ret;
 
     $senderUid = _get_uid_by_phoneno($sender_phoneno);
-    $account_tmp = user_load($senderUid);
 
+    $account_tmp = user_load($senderUid);
     $recipient_uid = 0;
 
     $threads = array();
