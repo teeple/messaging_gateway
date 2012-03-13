@@ -48,6 +48,9 @@ function privatemsg_rules_rules_action_info() {
           'description' => t('Recipient of the message.'),
         ),
       ) + $fields,
+      'provides' => array(
+         'privatemsg_fetched' => array('type' => 'privatemsg_message', 'label' => t('Fetched Privatemsg')),
+      ),
       'group' => t('Private messages'),
     ),
    'privatemsg_rules_reply' => array(
@@ -218,6 +221,8 @@ function privatemsg_rules_new($args, $element) {
   foreach ($result['messages']['warning'] as $args) {
     rules_log('Warning message reported when trying to send message: !warning', array('!warning' => $args), RulesLog::WARN);
   }
+
+  return array('privatemsg_fetched' => $result['message']);
 }
 
 /**
