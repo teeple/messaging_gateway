@@ -21,7 +21,7 @@ function _openflashchart_chart(&$chart, &$data) {
 }
 
 /**
- * Implementation of hook_charts_render().
+ * Implements hook_charts_render().
  *
  * Its a Charts module hook. It transform the data into a HTML chart.
  *

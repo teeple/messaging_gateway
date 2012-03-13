@@ -187,14 +187,14 @@ class charts_plugin_style_chart extends views_plugin_style {
     // another aggregation in for this field.
 
     foreach ($this->view->field as $field) {
-      $query_field = substr($field->field, 0, 3) == 'cid' ? $field->definition['calc'] : $field->table . '.' . $field->field;
+      $query_field = drupal_substr($field->field, 0, 3) == 'cid' ? $field->definition['calc'] : $field->table . '.' . $field->field;
       $query_alias = $field->field_alias;
 
       // Add the aggregation.
       if ($field->field == $this->options['aggregation_field']) {
         $this->view->query->add_orderby(NULL, NULL, 'asc', $query_alias);
         $this->view->query->add_groupby($query_field);
-        if (substr($field->field, 0, 3) == 'cid') {
+        if (drupal_substr($field->field, 0, 3) == 'cid') {
           $this->view->query->add_field(NULL, $query_field, $field->field, array('aggregate' => TRUE));
         }
         else {

@@ -76,7 +76,7 @@ function _fusioncharts_chart(&$chart, &$data) {
 }
 
 /**
- * Implementation of hook_charts_render().
+ * Implements hook_charts_render().
  *
  * Its a Charts module hook. It transform the data into a HTML chart.
  *
@@ -169,7 +169,7 @@ function _fusioncharts_series(&$chart, &$data) {
     }
 
     if (isset($data['#color'][$series])) {
-      $options['color'] = substr($data['#color'][$series], 1);
+      $options['color'] = drupal_substr($data['#color'][$series], 1);
     }
 
     $chart['value'][] = _fusioncharts_values('set', $series_data, $options);

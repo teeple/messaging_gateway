@@ -99,16 +99,15 @@ function _charts_system_charts($ctype) {
  *   String. The HTML chart when all data is fine or a blank string
  */
 function _charts_system_generate($title, $sql, $callback = NULL) {
-  $results = db_query($sql);
+  $results = db_query($sql, array());
+  $data = array();
 
-  while ($result = db_fetch_array($results)) {
-    if (!empty($callback)) {
-      $result['name'] = $callback($result['name']);
-    }
+  foreach ($results as $record) {
+    $name = empty($callback) ? $record->name : $callback($record->name);
 
     $data[] = array(
-      '#value'  => $result['count'],
-      '#label'  => $result['name'] . ': ' . $result['count']
+      '#value'  => $record->count,
+      '#label'  => $name . ': ' . $record->count
     );
   }
 
@@ -135,9 +134,11 @@ function _charts_system_node_activity() {
 
   $results = db_query('SELECT type, created
     FROM {node}
-    WHERE created < %d AND created > %d
-    ORDER BY created',
-    $now, mktime(0, 0, 0, date('m', $now), 1, date('Y', $now))
+    WHERE created < :now AND created > :then
+    ORDER BY created', array(
+      ':now' => $now,
+      ':then' => mktime(0, 0, 0, date('m', $now), 1, date('Y', $now)),
+    )
   );
 
   $max    = array();

@@ -6,10 +6,10 @@
  */
 
 /**
- * Implementation of hook_requirements().
+ * Implements hook_requirements().
  */
 function fusioncharts_requirements($phase) {
-  $path = file_create_path() . '/fusioncharts';
+  $path = drupal_get_path('module', 'fusioncharts');
   if (!file_exists($path . '/MSLine.swf')) {
     $requirements['charts']['title']        = t('FusionCharts');
     $requirements['charts']['value']        = t('FusionCharts flash files not installed');

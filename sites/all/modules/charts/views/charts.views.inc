@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_views_plugins().
+ * Implements hook_views_plugins().
  *
  * Define charts style for Views.
  */
